@@ -22,7 +22,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Installing dependencies from requirements.txt
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 sleep 180
 
