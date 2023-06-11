@@ -7,12 +7,17 @@ import threading
 from tkinter import messagebox
 
 from rocketrecorder.open_folder import open_the_folder
-from rocketrecorder.screen_recorder import (
-    record_windows,
-    record_linux,
-    stop_video_recording,
-    free_resources,
-)
+
+if platform.system() == "Linux":
+    from rocketrecorder.linux_screen_recorder import (
+        record,
+        stop_video_recording,
+    )
+else:
+    from rocketrecorder.windows_screen_recorder import (
+        record,
+        stop_video_recording,
+    )
 from rocketrecorder.screenshot import make_screenshot
 
 
@@ -134,10 +139,8 @@ class RocketRecorder:
         """
         Start the screen recording based on the platform.
         """
-        if platform.system() == "Linux":
-            threading.Thread(target=record_linux).start()
-        else:
-            threading.Thread(target=record_windows).start()
+
+        threading.Thread(target=record).start()
 
     @staticmethod
     def stop_recording():
