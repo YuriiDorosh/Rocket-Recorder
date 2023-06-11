@@ -4,7 +4,6 @@ from screen_recorder_sdk import screen_recorder
 from tkinter import messagebox
 import pyautogui
 from tkinter.filedialog import *
-import sounddevice as sound
 from scipy.io.wavfile import write
 import wavio as wv
 
@@ -19,7 +18,6 @@ def on_closing():
 root=Tk()
 root.geometry('1200x600')
 root.title('rocket recorder')
-root.iconbitmap('rocketico.ico')
 root.config(bg='#F8F8FF')
 root.protocol('WM_DELETE_WINDOW', on_closing)
 root.resizable(False,False)
