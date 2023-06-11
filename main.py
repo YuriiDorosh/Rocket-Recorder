@@ -91,7 +91,7 @@ class RocketRecorder:
 
         tip_btn = Button(
             self.root,
-            command=self.start_window_1,
+            command=self.start_window,
             image=self.tip_btn_image,
             bg="#A9A9A9",
             bd=2,
@@ -107,18 +107,18 @@ class RocketRecorder:
         )
         scr_btn.place(x=50, y=60)
 
-    def start_window_1(self):
+    def start_window(self):
         """
         Open the "Tips" window.
         """
-        new_window_1 = Toplevel(self.root)
-        new_window_1.geometry("400x300")
-        new_window_1.title("Tips")
+        new_window = Toplevel(self.root)
+        new_window.geometry("400x300")
+        new_window.title("Tips")
         if platform.system() == "Windows":
-            new_window_1.iconbitmap("for_new_window//icoo.ico")
-        new_window_1.resizable(False, False)
-        new_window_1.wm_attributes("-topmost", 1)
-        label2 = Label(new_window_1, image=self.bg)
+            new_window.iconbitmap("for_new_window//icoo.ico")
+        new_window.resizable(False, False)
+        new_window.wm_attributes("-topmost", 1)
+        label2 = Label(new_window, image=self.bg)
         label2.place(x=0, y=0)
 
     @staticmethod
@@ -188,9 +188,9 @@ class RocketRecorder:
             save_path = asksaveasfilename()
             screenshot.save(save_path + "_screenshot.png")
         else:
-            myscreenshot = pyautogui.screenshot()
+            my_screenshot = pyautogui.screenshot()
             save_path = asksaveasfilename()
-            myscreenshot.save(save_path + "_screenshot.png")
+            my_screenshot.save(save_path + "_screenshot.png")
 
     def on_closing(self):
         """
