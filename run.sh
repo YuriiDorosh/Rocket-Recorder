@@ -1,14 +1,6 @@
 #!/bin/bash
 
 
-# Move to the project folder
-cd Rocket-Recorder
-
-if [ $? -ne 0 ]; then
-  echo "Error: Failed to enter to project folder."
-  exit 1
-fi
-
 # Make virtual environment
 python3 -m venv env
 
