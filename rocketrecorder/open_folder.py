@@ -2,7 +2,8 @@ import os
 import platform
 import subprocess
 
-def open_folder():
+
+def open_the_folder():
     """
     Open the folder containing the recorded videos.
     """

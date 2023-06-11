@@ -1,3 +1,4 @@
+import os
 import datetime
 import subprocess
 import platform
@@ -43,14 +44,17 @@ def record_linux():
 
 def stop_video_recording():
     """
-    Stop the video recording using the screen_recorder_sdk.
+    Stop the screen recording based on the platform.
     """
-    screen_recorder.stop_video_recording()
-    screen_recorder.free_resources()
+    if platform.system() == "Linux":
+        subprocess.run(["pkill", "ffmpeg"])
+    else:
+        screen_recorder.stop_video_recording()
+        free_resources()
 
 
 def free_resources():
     """
     Free the resources used by the screen_recorder_sdk.
     """
-
+    screen_recorder.free_resources()

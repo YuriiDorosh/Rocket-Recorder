@@ -1,15 +1,20 @@
 from tkinter import *
 import os
 import platform
-import datetime
-import subprocess
+
 import threading
-import pyscreenshot as ImageGrab
-from tkinter.filedialog import *
+
 from tkinter import messagebox
-from rocketrecorder.open_folder import open_folder
-from rocketrecorder.screen_recorder import record_windows, record_linux
-import pyautogui
+
+from rocketrecorder.open_folder import open_the_folder
+from rocketrecorder.screen_recorder import (
+    record_windows,
+    record_linux,
+    stop_video_recording,
+    free_resources,
+)
+from rocketrecorder.screenshot import make_screenshot
+
 
 class RocketRecorder:
     def __init__(self):
@@ -23,13 +28,27 @@ class RocketRecorder:
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.resizable(False, False)
 
-        self.img = PhotoImage(file="rocketrecorder/photo/space.png")
-        self.bg = PhotoImage(file="rocketrecorder/for_new_window/wininfo.png")
-        self.start_btn_image = PhotoImage(file="rocketrecorder/buttons/start.png")
-        self.stop_btn_image = PhotoImage(file="rocketrecorder/buttons/stop.png")
-        self.folder_btn_image = PhotoImage(file="rocketrecorder/buttons/folder.png")
-        self.tip_btn_image = PhotoImage(file="rocketrecorder/buttons/tip.png")
-        self.scr_btn_image = PhotoImage(file="rocketrecorder/buttons/screen1.png")
+        from . import IMG_DIR
+
+        self.img = PhotoImage(file=os.path.join(IMG_DIR, "photo", "space.png"))
+        self.bg = PhotoImage(
+            file=os.path.join(IMG_DIR, "for_new_window", "wininfo.png")
+        )
+        self.start_btn_image = PhotoImage(
+            file=os.path.join(IMG_DIR, "buttons", "start.png")
+        )
+        self.stop_btn_image = PhotoImage(
+            file=os.path.join(IMG_DIR, "buttons", "stop.png")
+        )
+        self.folder_btn_image = PhotoImage(
+            file=os.path.join(IMG_DIR, "buttons", "folder.png")
+        )
+        self.tip_btn_image = PhotoImage(
+            file=os.path.join(IMG_DIR, "buttons", "tip.png")
+        )
+        self.scr_btn_image = PhotoImage(
+            file=os.path.join(IMG_DIR, "buttons", "screen1.png")
+        )
 
         self.app_label = Label(
             self.root,
@@ -89,7 +108,7 @@ class RocketRecorder:
 
         scr_btn = Button(
             self.root,
-            command=self.make_screenshot,
+            command=make_screenshot,
             image=self.scr_btn_image,
             bg="#A9A9A9",
             bd=2,
@@ -110,7 +129,8 @@ class RocketRecorder:
         label2 = Label(new_window, image=self.bg)
         label2.place(x=0, y=0)
 
-    def start_recording(self):
+    @staticmethod
+    def start_recording():
         """
         Start the screen recording based on the platform.
         """
@@ -119,41 +139,39 @@ class RocketRecorder:
         else:
             threading.Thread(target=record_windows).start()
 
-    def stop_recording(self):
+    @staticmethod
+    def stop_recording():
         """
-        Stop the screen recording based on the platform.
+        Stop the screen recording.
         """
-        if platform.system() == "Linux":
-            subprocess.run(["pkill", "ffmpeg"])
-        else:
-            stop_video_recording()
-            free_resources()
+        # if platform.system() == "Linux":
+        #     subprocess.run(["pkill", "ffmpeg"])
+        # else:
+        #     stop_video_recording()
+        #     free_resources()
 
-    def make_screenshot(self):
+        stop_video_recording()
+
+    @staticmethod
+    def make_screenshot():
         """
         Capture a screenshot of the screen.
         """
-        if platform.system() == "Linux":
-            screenshot = ImageGrab.grab()
-            save_path = asksaveasfilename()
-            screenshot.save(save_path + "_screenshot.png")
-        else:
-            my_screenshot = pyautogui.screenshot()
-            save_path = asksaveasfilename()
-            my_screenshot.save(save_path + "_screenshot.png")
+        make_screenshot()
 
-    def open_folder(self):
+    @staticmethod
+    def open_folder():
         """
         Open the folder containing the recorded videos.
         """
-        open_folder()
+        open_the_folder()
 
     def on_closing(self):
         """
         Handle the closing of the application window.
         """
         if messagebox.askokcancel(
-                "Exit", "Do You want to exit the App?\n Data may be corrupted"
+            "Exit", "Do You want to exit the App?\n Data may be corrupted"
         ):
             self.root.destroy()
 
